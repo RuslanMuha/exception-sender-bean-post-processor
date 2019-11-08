@@ -1,4 +1,4 @@
-package com.example.exceptionsenderspringbootstarter;
+package com.example.exceptionsenderspringbootstarter.service;
 
 import java.util.List;
 

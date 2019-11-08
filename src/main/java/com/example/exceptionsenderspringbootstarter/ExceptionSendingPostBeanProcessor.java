@@ -1,12 +1,14 @@
 package com.example.exceptionsenderspringbootstarter;
 
+import com.example.exceptionsenderspringbootstarter.service.Sender;
+import com.example.exceptionsenderspringbootstarter.annotation.SendException;
+import com.example.exceptionsenderspringbootstarter.configuration.NotificationProperties;
 import lombok.SneakyThrows;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
@@ -18,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.example.exceptionsenderspringbootstarter.Constant.*;
+import static com.example.exceptionsenderspringbootstarter.configuration.Constant.*;
 
 
 public class ExceptionSendingPostBeanProcessor implements BeanPostProcessor {
