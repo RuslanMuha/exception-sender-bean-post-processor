@@ -1,5 +1,6 @@
 package com.example.exceptionsenderspringbootstarter;
 
+import lombok.SneakyThrows;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -68,25 +69,22 @@ public class ExceptionSendingPostBeanProcessor implements BeanPostProcessor {
         for (Class e : exceptionClasses) {
             if (e.getName().equals(ex.getClass().getName())) {
                 Optional<List<String>> mailsFromPath = getPath();
-                if(!mailsFromPath.isPresent() && notificationProperties.getMails()==null){
+                if (!mailsFromPath.isPresent() && notificationProperties.getMails() == null) {
                     throw new IllegalArgumentException(NO_RECIPIENT);
                 }
-                    List<String> mails = mailsFromPath.orElseGet(() -> notificationProperties.getMails());
-                    sender.send(mails, ex.getClass().getName());
+                List<String> mails = mailsFromPath.orElseGet(() -> notificationProperties.getMails());
+                sender.send(mails, ex.getClass().getName());
             }
         }
     }
 
+    @SneakyThrows
     private Optional<List<String>> getPath() {
         String path = System.getProperty(KEY);
-        if (path != null) {
-            try {
-                return Optional.of(Files.lines(Paths.get(path)).collect(Collectors.toList()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return Optional.empty();
+        return path != null ? Optional.of(Files.lines(Paths.get(path))
+                .collect(Collectors.toList())) : Optional.empty();
+
+
     }
 
 }
