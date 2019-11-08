@@ -6,4 +6,5 @@ import java.util.Optional;
 public interface PropertiesResolver {
     Optional<List<String>> getSource();
 
+
 }

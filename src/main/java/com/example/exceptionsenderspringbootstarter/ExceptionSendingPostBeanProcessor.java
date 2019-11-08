@@ -22,7 +22,7 @@ public class ExceptionSendingPostBeanProcessor implements BeanPostProcessor {
     private Sender sender;
     @Autowired
     private List<PropertiesResolver> propertiesResolver;
-    private Map<String, Class> map = new HashMap<>();
+    private final Map<String, Class> map = new HashMap<>();
 
 
     @Override
