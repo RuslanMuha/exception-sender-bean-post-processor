@@ -1,9 +1,8 @@
 package com.example.exceptionsenderspringbootstarter;
 
+import com.example.exceptionsenderspringbootstarter.configuration.PropertiesResolver;
 import com.example.exceptionsenderspringbootstarter.service.Sender;
 import com.example.exceptionsenderspringbootstarter.annotation.SendException;
-import com.example.exceptionsenderspringbootstarter.configuration.NotificationProperties;
-import lombok.SneakyThrows;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -12,15 +11,9 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static com.example.exceptionsenderspringbootstarter.configuration.Constant.*;
 
 
 public class ExceptionSendingPostBeanProcessor implements BeanPostProcessor {
@@ -28,7 +21,7 @@ public class ExceptionSendingPostBeanProcessor implements BeanPostProcessor {
     @Autowired
     private Sender sender;
     @Autowired
-    private NotificationProperties notificationProperties;
+    private List<PropertiesResolver> propertiesResolver;
     private Map<String, Class> map = new HashMap<>();
 
 
@@ -70,23 +63,16 @@ public class ExceptionSendingPostBeanProcessor implements BeanPostProcessor {
     private void ifEqualsSend(Class<? extends Throwable>[] exceptionClasses, Throwable ex) {
         for (Class e : exceptionClasses) {
             if (e.getName().equals(ex.getClass().getName())) {
-                Optional<List<String>> mailsFromPath = getPath();
-                if (!mailsFromPath.isPresent() && notificationProperties.getMails() == null) {
-                    throw new IllegalArgumentException(NO_RECIPIENT);
-                }
-                List<String> mails = mailsFromPath.orElseGet(() -> notificationProperties.getMails());
-                sender.send(mails, ex.getClass().getName());
+                propertiesResolver.forEach(prop -> {
+                    if(prop.getSource().isPresent()){
+                        List<String> mails = prop.getSource().get();
+                        sender.send(mails, ex.getClass().getName());
+                    }
+                });
+
             }
         }
     }
 
-    @SneakyThrows
-    private Optional<List<String>> getPath() {
-        String path = System.getProperty(KEY);
-        return path != null ? Optional.of(Files.lines(Paths.get(path))
-                .collect(Collectors.toList())) : Optional.empty();
-
-
-    }
 
 }
