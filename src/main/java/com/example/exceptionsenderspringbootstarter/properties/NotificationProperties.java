@@ -1,4 +1,4 @@
-package com.example.exceptionsenderspringbootstarter.configuration;
+package com.example.exceptionsenderspringbootstarter.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

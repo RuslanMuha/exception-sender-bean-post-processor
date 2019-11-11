@@ -1,4 +1,4 @@
-package com.example.exceptionsenderspringbootstarter.configuration;
+package com.example.exceptionsenderspringbootstarter.properties;
 
 import java.util.List;
 import java.util.Optional;

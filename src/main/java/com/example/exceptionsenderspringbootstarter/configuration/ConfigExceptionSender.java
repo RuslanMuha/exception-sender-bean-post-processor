@@ -1,16 +1,15 @@
 package com.example.exceptionsenderspringbootstarter.configuration;
 
+import com.example.exceptionsenderspringbootstarter.properties.ApplicationPropResolver;
+import com.example.exceptionsenderspringbootstarter.properties.FilePropertiesResolver;
+import com.example.exceptionsenderspringbootstarter.properties.NotificationProperties;
 import com.example.exceptionsenderspringbootstarter.service.EmailSender;
-import com.example.exceptionsenderspringbootstarter.ExceptionSendingPostBeanProcessor;
+import com.example.exceptionsenderspringbootstarter.ExceptionSendingBeanPostProcessor;
 import com.example.exceptionsenderspringbootstarter.service.Sender;
-import lombok.SneakyThrows;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 
@@ -20,8 +19,8 @@ public class ConfigExceptionSender {
 
 
     @Bean
-    public ExceptionSendingPostBeanProcessor exceptionHandlingPostBeanProcessor() {
-        return new ExceptionSendingPostBeanProcessor();
+    public ExceptionSendingBeanPostProcessor exceptionHandlingPostBeanProcessor() {
+        return new ExceptionSendingBeanPostProcessor();
     }
 
     @Bean

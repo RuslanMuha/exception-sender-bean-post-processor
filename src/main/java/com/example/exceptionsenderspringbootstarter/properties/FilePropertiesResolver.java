@@ -1,4 +1,4 @@
-package com.example.exceptionsenderspringbootstarter.configuration;
+package com.example.exceptionsenderspringbootstarter.properties;
 
 import lombok.SneakyThrows;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.example.exceptionsenderspringbootstarter.configuration.Constant.KEY;
+import static com.example.exceptionsenderspringbootstarter.properties.Constant.KEY;
 
 public class FilePropertiesResolver implements PropertiesResolver {
 
