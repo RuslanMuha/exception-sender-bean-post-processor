@@ -32,6 +32,10 @@ public class ExceptionSendingBeanPostProcessor implements BeanPostProcessor {
         //sets up the object
         Class<?> beanClass = bean.getClass();
         if (beanClass.isAnnotationPresent(SendException.class)) {
+            // save the metadata of the original bean,
+            // such as the BeanPostProcessor working according to the “Change Of Responsibility” pattern,
+            // on the method "postProcessAfterInitialization"
+            //we can already get the proxy, losing the original metadata of the bin
             map.put(beanName, beanClass);
         }
         return bean;
