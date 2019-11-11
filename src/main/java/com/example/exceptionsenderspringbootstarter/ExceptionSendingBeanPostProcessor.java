@@ -72,6 +72,8 @@ public class ExceptionSendingBeanPostProcessor implements BeanPostProcessor {
                 // UndeclaredThrowableException instance contains undeclared checked exception
                 // if the exception cannot be assigned to any of the types of exceptions declared in the throws clause of the method
                 ifEqualsSend(exceptionClasses, ex.getCause());
+
+                //so that no one notices ours intervention, we throw the original exception, which we caught back
                 throw ex.getCause();
 
             }
