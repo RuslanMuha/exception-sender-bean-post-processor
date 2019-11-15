@@ -1,6 +1,6 @@
 package com.example.exceptionsenderspringbootstarter.configuration;
 
-import com.example.exceptionsenderspringbootstarter.properties.ApplicationPropResolver;
+import com.example.exceptionsenderspringbootstarter.properties.ApplPropertiesResolver;
 import com.example.exceptionsenderspringbootstarter.properties.FilePropertiesResolver;
 import com.example.exceptionsenderspringbootstarter.properties.NotificationProperties;
 import com.example.exceptionsenderspringbootstarter.service.EmailSender;
@@ -36,8 +36,8 @@ public class ConfigExceptionSender {
 
     @Bean
     @ConditionalOnProperty(value = "exception.mails")
-    public ApplicationPropResolver applicationPropResolver() {
-        return new ApplicationPropResolver();
+    public ApplPropertiesResolver applicationPropResolver() {
+        return new ApplPropertiesResolver();
     }
 
 }

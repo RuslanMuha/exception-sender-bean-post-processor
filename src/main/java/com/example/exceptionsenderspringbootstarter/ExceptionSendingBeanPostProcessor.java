@@ -45,7 +45,9 @@ public class ExceptionSendingBeanPostProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         //changes the behavior of an object
         Class beanClass = map.get(beanName);
+        //if bean there is in map, it mean that it our bean with annotation, else skip all other  beans
         if (beanClass != null) {
+
             Annotation annotation = beanClass.getAnnotation(SendException.class);
             if (annotation instanceof SendException) {
                 SendException sendException = (SendException) annotation;
@@ -82,14 +84,10 @@ public class ExceptionSendingBeanPostProcessor implements BeanPostProcessor {
     }
 
     private void ifEqualsSend(Class<? extends Throwable>[] exceptionClasses, Throwable ex) {
+
         for (Class e : exceptionClasses) {
             if (e.getName().equals(ex.getClass().getName())) {
-                propertiesResolver.forEach(prop -> {
-                    if (prop.getSource().isPresent()) {
-                        List<String> mails = prop.getSource().get();
-                        sender.send(mails, ex.getClass().getName());
-                    }
-                });
+                propertiesResolver.forEach(prop -> prop.getSource().ifPresent((m)->sender.send(m, ex.getClass().getName())));
 
             }
         }

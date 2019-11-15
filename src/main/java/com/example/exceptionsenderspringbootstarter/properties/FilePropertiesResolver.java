@@ -15,10 +15,9 @@ public class FilePropertiesResolver implements PropertiesResolver {
     @SneakyThrows
     @Override
     public Optional<List<String>> getSource() {
-
         String path = System.getProperty(KEY);
         return path != null ? Optional.of(Files.lines(Paths.get(path))
-                .collect(Collectors.toList())):Optional.empty();
+                .collect(Collectors.toList())) : Optional.empty();
 
     }
 }
