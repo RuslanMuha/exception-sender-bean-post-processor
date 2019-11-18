@@ -1,12 +1,11 @@
 package com.example.exceptionsenderspringbootstarter;
 
+import com.example.exceptionsenderspringbootstarter.annotation.SendException;
 import com.example.exceptionsenderspringbootstarter.properties.PropertiesResolver;
 import com.example.exceptionsenderspringbootstarter.service.Sender;
-import com.example.exceptionsenderspringbootstarter.annotation.SendException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -19,6 +18,8 @@ import java.util.Map;
 public class ExceptionSendingBeanPostProcessor implements BeanPostProcessor {
 //BeanPostProcessor allows you to configure beans before they get into the container.
 //The “Change Of Responsibility” pattern is involved here.
+
+
 
     @Autowired
     private Sender sender;
@@ -47,7 +48,6 @@ public class ExceptionSendingBeanPostProcessor implements BeanPostProcessor {
         Class beanClass = map.get(beanName);
         //if bean there is in map, it mean that it our bean with annotation, else skip all other  beans
         if (beanClass != null) {
-
             Annotation annotation = beanClass.getAnnotation(SendException.class);
             if (annotation instanceof SendException) {
                 SendException sendException = (SendException) annotation;
@@ -58,6 +58,7 @@ public class ExceptionSendingBeanPostProcessor implements BeanPostProcessor {
     }
 
     private Object getProxy(Object bean, Class beanClass, Class<? extends Throwable>[] exceptionClasses) {
+
         //Each proxy class has one public constructor that takes one argument, an implementation of the InvocationHandler interface.
         return Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(), (proxy, method, args) -> {
             // InvocationHandler can intercept all method calls that are accessed by the proxy object.
@@ -83,11 +84,13 @@ public class ExceptionSendingBeanPostProcessor implements BeanPostProcessor {
         });
     }
 
+
     private void ifEqualsSend(Class<? extends Throwable>[] exceptionClasses, Throwable ex) {
+
 
         for (Class e : exceptionClasses) {
             if (e.getName().equals(ex.getClass().getName())) {
-                propertiesResolver.forEach(prop -> prop.getSource().ifPresent((m)->sender.send(m, ex.getClass().getName())));
+                propertiesResolver.forEach(prop -> sender.send(prop.getSource(), e.getName()));
 
             }
         }

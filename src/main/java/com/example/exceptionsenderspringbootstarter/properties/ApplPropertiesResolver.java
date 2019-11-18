@@ -10,7 +10,7 @@ public class ApplPropertiesResolver implements PropertiesResolver {
     private NotificationProperties notificationProperties;
 
     @Override
-    public Optional<List<String>> getSource() {
-        return Optional.of(notificationProperties.getMails());
+    public List<String> getSource() {
+        return notificationProperties.getMails();
     }
 }

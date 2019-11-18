@@ -1,1 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.example.exceptionsenderspringbootstarter.configuration.ConfigExceptionSender
+org.springframework.context.ApplicationContextInitializer=com.example.exceptionsenderspringbootstarter.MailSourceCheckApplicationContextInitializer
